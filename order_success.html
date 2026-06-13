@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Order Confirmed — RESQ ME</title>
+  <link rel="icon" type="image/png" href="assets/Logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f4f1eb; --surface: #fcfbf8; --border: #d7d0c4;
+      --text: #231f19; --muted: #72695c; --primary: #c0392b;
+      --shadow: 0 12px 36px rgba(35,31,25,.08);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, sans-serif;
+      background: radial-gradient(circle at top left, rgba(192,57,43,.07), transparent 26%), var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center; padding: 2rem 1rem;
+    }
+    .card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 22px; box-shadow: var(--shadow);
+      padding: 3rem 2.5rem; max-width: 520px; width: 100%;
+      text-align: center;
+    }
+    .icon { font-size: 4rem; margin-bottom: 1rem; }
+    h1 {
+      font-family: "Raleway", sans-serif; font-weight: 800;
+      font-size: clamp(1.6rem,2rem+1vw,2.4rem); margin: 0 0 .75rem;
+      color: var(--text);
+    }
+    p { color: var(--muted); line-height: 1.65; margin: 0 0 .75rem; }
+    .highlight { background: rgba(192,57,43,.08); border:1px solid rgba(192,57,43,.2); border-radius:12px; padding:1rem 1.25rem; margin:1.25rem 0; }
+    .highlight strong { color: var(--primary); font-size:1.05rem; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-height: 44px; padding: 0 1.5rem;
+      border-radius: 999px; border: none; cursor: pointer;
+      font-family: inherit; font-weight: 700; font-size: .95rem;
+      text-decoration: none; transition: opacity .15s;
+      margin: .35rem;
+    }
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-primary:hover { opacity: .88; }
+    .btn-secondary { background: transparent; border: 1px solid var(--border); color: var(--text); }
+    .btn-secondary:hover { background: var(--bg); }
+    .steps { text-align: left; margin: 1.5rem 0 0; }
+    .steps h3 { font-family:"Raleway",sans-serif; font-weight:700; font-size:.95rem; margin:0 0 .75rem; }
+    .step-row { display:flex; gap:.75rem; align-items:flex-start; margin-bottom:.65rem; }
+    .step-num { width:1.6rem; height:1.6rem; border-radius:50%; background:var(--primary); color:#fff; font-size:.75rem; font-weight:700; display:grid; place-items:center; flex-shrink:0; margin-top:.1rem; }
+    .step-text { font-size:.88rem; color:var(--muted); line-height:1.5; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="icon">🎉</div>
+    <h1>Order Confirmed!</h1>
+    <p>Thank you for your order. We've received your request and will contact you shortly to confirm payment and delivery details.</p>
+
+    <div class="highlight">
+      <p style="margin:0;font-size:.85rem;color:var(--muted)">Check your inbox at</p>
+      <strong id="confirmEmail">the email you provided</strong>
+      <p style="margin:.35rem 0 0;font-size:.8rem;color:var(--muted)">for your order confirmation.</p>
+    </div>
+
+    <div class="steps">
+      <h3>What happens next?</h3>
+      <div class="step-row">
+        <div class="step-num">1</div>
+        <div class="step-text">We review your order and send a confirmation email within 24 hours.</div>
+      </div>
+      <div class="step-row">
+        <div class="step-num">2</div>
+        <div class="step-text">You'll receive payment instructions based on your chosen method (GCash, Maya, etc.).</div>
+      </div>
+      <div class="step-row">
+        <div class="step-num">3</div>
+        <div class="step-text">Once payment is confirmed, your product is prepared and shipped. Delivery takes 3–7 business days.</div>
+      </div>
+    </div>
+
+    <div style="margin-top:2rem">
+      <a href="index.html" class="btn btn-primary">← Back to Home</a>
+      <a href="mailto:support@resqme.com" class="btn btn-secondary">Contact Support</a>
+    </div>
+  </div>
+</body>
+</html>

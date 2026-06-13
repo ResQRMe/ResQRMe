@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RESQ ME</title>
+  <link rel="icon" type="image/png" href="assets/Logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+
+  <style>
+    /* ── Privacy Modal ── */
+    #privacyOverlay {
+      position: fixed; inset: 0; z-index: 9999;
+      background: rgba(0,0,0,.78);
+      display: flex; align-items: center; justify-content: center;
+      padding: 16px; backdrop-filter: blur(4px);
+      animation: dpFadeIn .3s ease;
+    }
+    @keyframes dpFadeIn { from{opacity:0} to{opacity:1} }
+    #privacyModal {
+      background: #fff; color: #1a1f2e;
+      border-radius: 18px; box-shadow: 0 24px 64px rgba(0,0,0,.55);
+      max-width: 560px; width: 100%; max-height: 90vh;
+      display: flex; flex-direction: column; overflow: hidden;
+      animation: dpSlideUp .35s cubic-bezier(.22,.68,0,1.2);
+    }
+    @keyframes dpSlideUp { from{opacity:0;transform:translateY(30px) scale(.97)} to{opacity:1;transform:translateY(0) scale(1)} }
+    [data-theme="dark"] #privacyModal { background:#161b22; color:#e6edf3; border:1px solid #30363d; }
+    #privacyModal .dp-header { background:#c0392b; padding:22px 28px 18px; flex-shrink:0; }
+    #privacyModal .dp-header h2 { font-family:Raleway,sans-serif; font-weight:800; font-size:1.15rem; color:#fff; margin:0 0 4px; }
+    #privacyModal .dp-header p { font-size:.8rem; color:rgba(255,255,255,.78); margin:0; }
+    #privacyModal .dp-body { padding:22px 28px; overflow-y:auto; flex:1; font-size:.88rem; line-height:1.72; }
+    #privacyModal .dp-body h3 { font-family:Raleway,sans-serif; font-weight:700; font-size:.92rem; margin:16px 0 4px; color:#c0392b; }
+    #privacyModal .dp-body h3:first-child { margin-top:0; }
+    #privacyModal .dp-body p, #privacyModal .dp-body ul { margin:0 0 10px; opacity:.88; }
+    #privacyModal .dp-body ul { padding-left:18px; }
+    #privacyModal .dp-body ul li { margin-bottom:4px; }
+    #privacyModal .dp-body .dp-law { font-size:.78rem; background:rgba(192,57,43,.08); border-left:3px solid #c0392b; border-radius:0 8px 8px 0; padding:10px 14px; margin-top:14px; }
+    [data-theme="dark"] #privacyModal .dp-body .dp-law { background:rgba(192,57,43,.15); }
+    #privacyModal .dp-footer { padding:16px 28px 22px; flex-shrink:0; border-top:1px solid rgba(0,0,0,.08); display:flex; flex-direction:column; gap:10px; }
+    [data-theme="dark"] #privacyModal .dp-footer { border-top-color:#30363d; }
+    #privacyModal .dp-checkbox-row { display:flex; align-items:flex-start; gap:10px; font-size:.84rem; line-height:1.5; cursor:pointer; user-select:none; }
+    #privacyModal .dp-checkbox-row input[type="checkbox"] { width:17px; height:17px; margin-top:2px; flex-shrink:0; accent-color:#c0392b; cursor:pointer; }
+    #privacyModal .dp-btn-row { display:flex; gap:10px; }
+    #privacyModal .dp-btn-row button { flex:1; padding:11px 0; border-radius:10px; font-family:Raleway,sans-serif; font-weight:700; font-size:.88rem; cursor:pointer; border:none; transition:opacity .18s,transform .12s; }
+    #privacyModal .dp-btn-row button:active { transform:scale(.97); }
+    #btnDecline { background:transparent; border:1.5px solid #c0392b !important; color:#c0392b; }
+    #btnDecline:hover { background:rgba(192,57,43,.07); }
+    #btnAccept { background:#c0392b; color:#fff; }
+    #btnAccept:hover { opacity:.88; }
+    #btnAccept:disabled { background:#aaa; cursor:not-allowed; opacity:.6; }
+    body.dp-locked main, body.dp-locked header, body.dp-locked footer { filter:blur(3px); pointer-events:none; user-select:none; }
+  </style>
+</head>
+<body>
+
+  <!-- PRIVACY MODAL -->
+  <div id="privacyOverlay" role="dialog" aria-modal="true" aria-labelledby="dpTitle">
+    <div id="privacyModal">
+      <div class="dp-header">
+        <h2 id="dpTitle">🔒 Data Privacy Notice</h2>
+        <p>Republic Act No. 10173 — Data Privacy Act of 2012</p>
+      </div>
+      <div class="dp-body">
+        <h3>Purpose of Data Collection</h3>
+        <p>RESQ ME collects and processes your personal and medical information solely to generate your emergency health profile and QR identification tag. Your data enables first responders to access critical health information during emergencies.</p>
+        <h3>What We Collect</h3>
+        <ul>
+          <li>Personal information (name, date of birth, sex, address, contact details)</li>
+          <li>Emergency contact information</li>
+          <li>Medical information (allergies, medications, chronic conditions, medical history)</li>
+          <li>Health insurance and primary care provider details</li>
+          <li>Patient photo (optional)</li>
+        </ul>
+        <h3>How Your Data is Used</h3>
+        <ul>
+          <li>Stored securely in a database linked to your unique Patient ID</li>
+          <li>Accessible via your personal QR code to authorized viewers (e.g., first responders)</li>
+          <li>Never sold, shared, or disclosed to third parties without your consent</li>
+          <li>Used only for emergency identification and health profile purposes</li>
+        </ul>
+        <h3>Your Rights Under RA 10173</h3>
+        <ul>
+          <li><strong>Right to be informed</strong> — you are notified before data is collected</li>
+          <li><strong>Right to access</strong> — you may request a copy of your stored data</li>
+          <li><strong>Right to rectification</strong> — you may correct inaccurate data</li>
+          <li><strong>Right to erasure</strong> — you may request deletion of your record</li>
+          <li><strong>Right to data portability</strong> — you may request a copy in usable format</li>
+        </ul>
+        <h3>Data Retention</h3>
+        <p>Your data is retained for as long as your RESQ ME profile is active. You may request deletion at any time by contacting us at <strong>support@resqme.com</strong>.</p>
+        <div class="dp-law">
+          <strong>Legal Basis:</strong> This notice is issued in compliance with the <em>Data Privacy Act of 2012 (RA 10173)</em> and its Implementing Rules and Regulations, administered by the National Privacy Commission (NPC) of the Philippines.
+        </div>
+      </div>
+      <div class="dp-footer">
+        <label class="dp-checkbox-row" for="dpAgreeCheck">
+          <input type="checkbox" id="dpAgreeCheck" />
+          <span>I have read and understood this Data Privacy Notice, and I voluntarily consent to the collection and processing of my personal and medical data by RESQ ME.</span>
+        </label>
+        <div class="dp-btn-row">
+          <button id="btnDecline" type="button">Decline</button>
+          <button id="btnAccept" type="button" disabled>I Agree & Continue</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark">
+        <img src="RESQRME.png" alt="RESQ ME" class="logo-img" />
+      </div>
+      <div><h1>RESQ ME</h1></div>
+    </div>
+    <button id="navToggle" class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+    <nav class="main-nav" aria-label="Main navigation">
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#shop">Shop</a></li>
+        <li><a href="#register">Register</a></li>
+        <li><a href="#order">Order</a></li>
+        <li><a href="#about">About</a></li>
+        <div class="header-actions nav-actions">
+          <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">◐</button>
+        </div>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main" class="page">
+
+    <!-- HERO -->
+    <section id="home" class="hero card">
+      <div class="hero-inner">
+        <div class="hero-copy">
+          <p class="kicker">Hello, Welcome aboard!</p>
+          <h2>Your critical health information, reachable when time is limited.</h2>
+          <p>The company offers free digital profiles alongside affordable physical keychains and card-style tags to ensure vital health data is reachable when time is limited.</p>
+          <div class="hero-ctas">
+            <a class="btn-ghost" href="#register">Create Profile</a>
+            <a class="btn-outline" href="#shop">Shop Products</a>
+          </div>
+        </div>
+        <div class="hero-image">
+          <img src="RESQRME.png" alt="Storefront image">
+        </div>
+      </div>
+    </section>
+
+    <!-- SHOP -->
+    <section id="shop" class="favorites card">
+      <div class="section-head">
+        <p class="kicker">PRODUCTS</p>
+        <h3>Buy our products now</h3>
+      </div>
+      <div class="favorites-list">
+        <div class="fav-item">
+          <img src="Copy of Logo- Room Finder (4).png" alt="Product 1" />
+          <div class="fav-meta"><strong>QR CODE SCREENSHOT</strong><span>FREE</span></div>
+        </div>
+        <div class="fav-item">
+          <img src="Copy of Logo- Room Finder (6).png" alt="Product 2" />
+          <div class="fav-meta"><strong>QR KEYCHAIN W/ NFC</strong><span>₱100.00</span></div>
+        </div>
+        <div class="fav-item">
+          <img src="Copy of Logo- Room Finder (5).png" alt="Product 3" />
+          <div class="fav-meta"><strong>QR CARD W/ NFC</strong><span>₱150.00</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         MULTI-STEP REGISTRATION FORM
+    ═══════════════════════════════════════════ -->
+    <section id="register" class="reg-section card">
+      <div class="reg-hero">
+        <h2 class="reg-title">Create your emergency profile</h2>
+        <p class="reg-sub">Your QR code is generated automatically after you submit. No password needed — your QR is your key.</p>
+      </div>
+
+      <!-- Step progress bar -->
+      <div class="step-bar" id="stepBar" aria-label="Form progress">
+        <div class="step-track">
+          <div class="step-fill" id="stepFill"></div>
+        </div>
+        <div class="step-labels">
+          <span class="step-label active" data-step="1">Personal</span>
+          <span class="step-label" data-step="2">Medical</span>
+          <span class="step-label" data-step="3">Insurance</span>
+          <span class="step-label" data-step="4">Review</span>
+        </div>
+      </div>
+
+      <form id="patientForm" novalidate>
+
+        <!-- ── STEP 1: Personal Information ── -->
+        <div class="form-step active" id="step1">
+          <div class="step-section-head">
+            <div class="step-icon">👤</div>
+            <span>Personal Information</span>
+          </div>
+          <hr class="step-divider" />
+
+          <!-- Photo upload with preview -->
+          <div class="field field-span-2">
+            <label for="photo">Patient Photo <span class="optional">(optional)</span></label>
+            <div class="photo-upload-area" id="photoUploadArea">
+              <input id="photo" name="photo" type="file" accept=".jpg,.jpeg,.png,image/jpeg,image/png" class="photo-input" />
+              <div class="photo-placeholder" id="photoPlaceholder">
+                <span class="photo-icon">📷</span>
+                <span>Choose File</span>
+                <span class="hint-sm">No file chosen</span>
+              </div>
+              <img id="photoPreview" class="photo-preview" alt="Patient photo preview" />
+              <button type="button" id="removePhoto" class="remove-photo" style="display:none">✕ Remove</button>
+            </div>
+            <small class="hint">Stored securely with your profile. Helps responders confirm identity.</small>
+          </div>
+
+          <div class="form-row-2">
+            <div class="field">
+              <label for="full_name">Full Name <span class="req">*</span></label>
+              <input id="full_name" name="full_name" placeholder="e.g. Juan dela Cruz" required />
+              <span class="field-error" id="err_full_name"></span>
+            </div>
+            <div class="field">
+              <label for="preferred_name">Preferred Name</label>
+              <input id="preferred_name" name="preferred_name" placeholder="e.g. Juan" />
+            </div>
+          </div>
+
+          <div class="form-row-2">
+            <div class="field">
+              <label for="dob">Date of Birth <span class="req">*</span></label>
+              <input id="dob" name="dob" type="date" required />
+              <span class="field-error" id="err_dob"></span>
+            </div>
+            <div class="field">
+              <label for="age">Age <span class="req">*</span></label>
+              <input id="age" name="age" type="number" min="0" max="130" placeholder="25" required readonly />
+              <span class="field-error" id="err_age"></span>
+            </div>
+          </div>
+
+          <div class="form-row-2">
+            <div class="field">
+              <label for="sex">Sex / Gender</label>
+              <select id="sex" name="sex">
+                <option value="" disabled selected>— Select —</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Non-binary">Non-binary</option>
+                <option value="Prefer not to say">Prefer not to say</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="occupation">Occupation</label>
+              <input id="occupation" name="occupation" placeholder="e.g. Student" />
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="address">Address</label>
+            <input id="address" name="address" placeholder="Street, Barangay, City, Province" />
+          </div>
+
+          <div class="form-row-2">
+            <div class="field">
+              <label for="phone">Phone</label>
+              <input id="phone" name="phone" type="tel" placeholder="+63 912 345 6789" />
+            </div>
+            <div class="field">
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" placeholder="you@example.com" />
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="blood_type">Blood Type</label>
+            <select id="blood_type" name="blood_type">
+              <option value="" disabled selected>— Select —</option>
+              <option>A+</option><option>A-</option>
+              <option>B+</option><option>B-</option>
+              <option>AB+</option><option>AB-</option>
+              <option>O+</option><option>O-</option>
+              <option>Unknown</option>
+            </select>
+          </div>
+
+          <hr class="step-divider" />
+          <div class="step-section-head">
+            <div class="step-icon">🆘</div>
+            <span>Emergency Contact</span>
+          </div>
+
+          <div class="form-row-2">
+            <div class="field">
+              <label for="emergency_name">Contact Name</label>
+              <input id="emergency_name" name="emergency_name" placeholder="e.g. Maria Santos" />
+            </div>
+            <div class="field">
+              <label for="emergency_relationship">Relationship</label>
+              <select id="emergency_relationship" name="emergency_relationship">
+                <option value="" disabled selected>Select relationship…</option>
+                <option>Parent</option><option>Spouse</option>
+                <option>Sibling</option><option>Guardian</option>
+                <option>Child</option><option>Friend</option><option>Other</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="emergency_phone">Emergency Phone</label>
+            <input id="emergency_phone" name="emergency_phone" type="tel" placeholder="+63 912 345 6789" />
+          </div>
+
+          <div class="step-nav">
+            <span></span>
+            <button type="button" class="btn btn-primary" id="toStep2">Next: Medical →</button>
+          </div>
+        </div>
+
+        <!-- ── STEP 2: Medical Information ── -->
+        <div class="form-step" id="step2">
+          <div class="step-section-head">
+            <div class="step-icon">🩺</div>
+            <span>Medical Information</span>
+          </div>
+          <hr class="step-divider" />
+
+          <!-- Allergies -->
+          <div class="field yn-field">
+            <span class="field-label">Do you have allergies? <span class="req">*</span></span>
+            <div class="radio-group">
+              <label class="radio-option"><input type="radio" name="allergies_yn" value="Yes" required /><span>Yes</span></label>
+              <label class="radio-option"><input type="radio" name="allergies_yn" value="No" /><span>No</span></label>
+            </div>
+            <div class="conditional-field" id="allergies_detail">
+              <label for="allergies">List your allergies</label>
+              <textarea id="allergies" name="allergies" rows="3" placeholder="e.g. Penicillin, Peanuts, Latex…"></textarea>
+            </div>
+            <span class="field-error" id="err_allergies_yn"></span>
+          </div>
+
+          <!-- Medications -->
+          <div class="field yn-field">
+            <span class="field-label">Are you currently taking medications? <span class="req">*</span></span>
+            <div class="radio-group">
+              <label class="radio-option"><input type="radio" name="medications_yn" value="Yes" required /><span>Yes</span></label>
+              <label class="radio-option"><input type="radio" name="medications_yn" value="No" /><span>No</span></label>
+            </div>
+            <div class="conditional-field" id="medications_detail">
+              <label for="medications">List your medications</label>
+              <textarea id="medications" name="medications" rows="3" placeholder="e.g. Metformin 500mg twice daily…"></textarea>
+            </div>
+            <span class="field-error" id="err_medications_yn"></span>
+          </div>
+
+          <!-- Chronic conditions -->
+          <div class="field yn-field">
+            <span class="field-label">Do you have any chronic conditions? <span class="req">*</span></span>
+            <div class="radio-group">
+              <label class="radio-option"><input type="radio" name="chronic_yn" value="Yes" required /><span>Yes</span></label>
+              <label class="radio-option"><input type="radio" name="chronic_yn" value="No" /><span>No</span></label>
+            </div>
+            <div class="conditional-field" id="chronic_detail">
+              <label for="chronic_conditions">Describe your chronic conditions</label>
+              <textarea id="chronic_conditions" name="chronic_conditions" rows="3" placeholder="e.g. Type 2 Diabetes, Hypertension…"></textarea>
+            </div>
+            <span class="field-error" id="err_chronic_yn"></span>
+          </div>
+
+          <!-- Medical history -->
+          <div class="field yn-field">
+            <span class="field-label">Do you have a relevant medical history? <span class="req">*</span></span>
+            <div class="radio-group">
+              <label class="radio-option"><input type="radio" name="history_yn" value="Yes" required /><span>Yes</span></label>
+              <label class="radio-option"><input type="radio" name="history_yn" value="No" /><span>No</span></label>
+            </div>
+            <div class="conditional-field" id="history_detail">
+              <label for="history">Medical History</label>
+              <textarea id="history" name="history" rows="3" placeholder="Past surgeries, hospitalizations, notable diagnoses…"></textarea>
+            </div>
+            <span class="field-error" id="err_history_yn"></span>
+          </div>
+
+          <div class="step-nav">
+            <button type="button" class="btn btn-secondary" id="toStep1Back">← Back</button>
+            <button type="button" class="btn btn-primary" id="toStep3">Next: Insurance →</button>
+          </div>
+        </div>
+
+        <!-- ── STEP 3: Insurance & Provider ── -->
+        <div class="form-step" id="step3">
+          <div class="step-section-head">
+            <div class="step-icon">🏥</div>
+            <span>Insurance &amp; Provider</span>
+          </div>
+          <hr class="step-divider" />
+
+          <!-- Insurance -->
+          <div class="field yn-field">
+            <span class="field-label">Do you have health insurance? <span class="req">*</span></span>
+            <div class="radio-group">
+              <label class="radio-option"><input type="radio" name="insurance_yn" value="Yes" required /><span>Yes</span></label>
+              <label class="radio-option"><input type="radio" name="insurance_yn" value="No" /><span>No</span></label>
+            </div>
+            <div class="conditional-field" id="insurance_detail">
+              <div class="form-row-2">
+                <div class="field">
+                  <label for="insurance_provider">Insurance Provider</label>
+                  <input id="insurance_provider" name="insurance_provider" placeholder="e.g. PhilHealth, Maxicare…" />
+                </div>
+                <div class="field">
+                  <label for="insurance_policy">Policy Number</label>
+                  <input id="insurance_policy" name="insurance_policy" placeholder="e.g. PH-123456789" />
+                </div>
+              </div>
+            </div>
+            <span class="field-error" id="err_insurance_yn"></span>
+          </div>
+
+          <!-- PCP -->
+          <div class="field yn-field">
+            <span class="field-label">Do you have a Primary Care Provider? <span class="req">*</span></span>
+            <div class="radio-group">
+              <label class="radio-option"><input type="radio" name="pcp_yn" value="Yes" required /><span>Yes</span></label>
+              <label class="radio-option"><input type="radio" name="pcp_yn" value="No" /><span>No</span></label>
+            </div>
+            <div class="conditional-field" id="pcp_detail">
+              <div class="form-row-2">
+                <div class="field">
+                  <label for="pcp_name">Provider Name</label>
+                  <input id="pcp_name" name="pcp_name" placeholder="e.g. Dr. Maria Santos" />
+                </div>
+                <div class="field">
+                  <label for="pcp_contact">Provider Contact</label>
+                  <input id="pcp_contact" name="pcp_contact" placeholder="e.g. +63 912 345 6789" />
+                </div>
+              </div>
+            </div>
+            <span class="field-error" id="err_pcp_yn"></span>
+          </div>
+
+          <div class="step-nav">
+            <button type="button" class="btn btn-secondary" id="toStep2Back">← Back</button>
+            <button type="button" class="btn btn-primary" id="toStep4">Review →</button>
+          </div>
+        </div>
+
+        <!-- ── STEP 4: Review & Submit ── -->
+        <div class="form-step" id="step4">
+          <div class="step-section-head">
+            <div class="step-icon">✅</div>
+            <span>Review your information</span>
+          </div>
+          <hr class="step-divider" />
+
+          <div id="reviewSummary" class="review-summary"></div>
+
+          <div id="statusBox" class="status-box">Ready to save your patient record.</div>
+
+          <div class="result-grid">
+            <div class="result-item">
+              <span>Patient ID</span>
+              <strong id="patientIdText">—</strong>
+            </div>
+            <div class="result-item">
+              <span>Record URL</span>
+              <a id="recordLink" href="#" target="_blank" rel="noopener noreferrer">—</a>
+            </div>
+          </div>
+
+          <div class="qr-wrap">
+            <img id="qrImage" alt="Patient QR code" width="240" height="240" />
+            <p class="qr-placeholder-text" id="qrPlaceholder">Your QR code will appear here after submission.</p>
+          </div>
+
+          <!-- Success overlay -->
+          <div class="success-overlay" id="successOverlay" style="display:none">
+            <div class="success-card">
+              <div class="success-icon">✅</div>
+              <h3>Profile Saved!</h3>
+              <p>Your emergency profile has been created successfully.</p>
+              <p class="success-id">Patient ID: <strong id="successPatientId">—</strong></p>
+              <div class="success-actions">
+                <a id="successRecordLink" href="#" target="_blank" class="btn btn-primary">View Record</a>
+                <button type="button" id="successDismiss" class="btn btn-secondary">Close</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="step-nav">
+            <button type="button" class="btn btn-secondary" id="toStep3Back">← Back</button>
+            <div class="submit-group">
+              <button class="btn btn-primary" type="submit" id="submitBtn">
+                <span id="submitBtnText">Save Patient Record</span>
+                <span id="submitSpinner" class="spinner" style="display:none"></span>
+              </button>
+              <button class="btn btn-secondary" type="reset">Clear All</button>
+            </div>
+          </div>
+        </div>
+
+      </form>
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         ORDER FORM — own section
+    ═══════════════════════════════════════════ -->
+    <section id="order" class="card order-section">
+      <div class="section-head">
+        <p class="kicker">Order Form</p>
+        <h3>Place Your Order</h3>
+      </div>
+
+    <div class="products">
+  <div class="product-preview">
+
+    <div class="product-item">
+      <img src="Copy of Logo- Room Finder (4).png" alt="QR Code Screenshot" class="product-preview-image" />
+      <div class="product-text">QR Digital Profile</div>
+    </div>
+
+    <div class="product-item">
+      <img src="Copy of Logo- Room Finder (6).png" alt="QR Keychain w/ NFC" class="product-preview-image" />
+      <div class="product-text">NFC Keychain</div>
+    </div>
+
+    <div class="product-item">
+      <img src="Copy of Logo- Room Finder (5).png" alt="QR Card w/ NFC" class="product-preview-image" />
+      <div class="product-text">NFC Card</div>
+    </div>
+
+  </div>
+</div>
+
+      <form id="orderForm" action="https://api.web3forms.com/submit" method="POST" class="order-form" novalidate>
+        <input type="hidden" name="access_key" value="bb783592-d7c6-4c0a-a194-38c0010f7713">
+        <input type="hidden" name="subject" value="New Order Received!">
+        <input type="checkbox" name="botcheck" class="hidden" aria-hidden="true" tabindex="-1">
+
+        <div class="order-grid">
+          <div class="form-group">
+            <label for="order_product">Select Product <span class="req">*</span></label>
+            <select name="product" id="order_product" required>
+              <option value="" disabled selected>Choose an Item...</option>
+              <option value="QR CODE SCREENSHOT" data-price="0">QR CODE SCREENSHOT — FREE</option>
+              <option value="QR KEYCHAIN W/ NFC" data-price="100">QR KEYCHAIN W/ NFC — ₱100</option>
+              <option value="QR CARD W/ NFC" data-price="150">QR CARD W/ NFC — ₱150</option>
+            </select>
+            <span class="field-error" id="err_order_product"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="order_quantity">Quantity <span class="req">*</span></label>
+            <input type="number" name="quantity" id="order_quantity" min="1" value="1" required />
+          </div>
+
+          <!-- Price display -->
+          <div class="form-group field-span-2">
+            <div class="price-display" id="priceDisplay" style="display:none">
+              <span class="price-label">Order Total</span>
+              <span class="price-value" id="priceValue">₱0.00</span>
+              <span class="price-note">Payment will be coordinated via email after checkout.</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="order_name">Full Name <span class="req">*</span></label>
+            <input type="text" name="name" id="order_name" required placeholder="Juan Dela Cruz" />
+            <span class="field-error" id="err_order_name"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="order_patient_id">Patient ID <span class="req">*</span></label>
+            <input type="text" name="patient_id" id="order_patient_id" required placeholder="PT-20260518-75456683" />
+            <small class="hint">Register first to get your Patient ID.</small>
+            <span class="field-error" id="err_order_patient_id"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="order_email">Email Address <span class="req">*</span></label>
+            <input type="email" name="email" id="order_email" required placeholder="resqme@example.com" />
+            <span class="field-error" id="err_order_email"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="order_phone">Phone Number</label>
+            <input type="tel" name="order_phone" id="order_phone" placeholder="+63 912 345 6789" />
+          </div>
+
+          <!-- Payment method -->
+          <div class="form-group field-span-2">
+            <label for="order_payment">Payment Method <span class="req">*</span></label>
+            <select name="payment_method" id="order_payment" required>
+              <option value="" disabled selected>Select payment method…</option>
+              <option value="GCash">GCash</option>
+              <option value="Maya">Maya</option>
+              <option value="Bank Transfer">Bank Transfer (BDO / BPI / UnionBank)</option>
+              <option value="Cash on Delivery">Cash on Delivery</option>
+              <option value="Over the Counter">Over the Counter</option>
+            </select>
+            <span class="field-error" id="err_order_payment"></span>
+          </div>
+
+          <!-- GCash reference (shown when GCash/Maya selected) -->
+          <div class="form-group field-span-2 conditional-field" id="gcash_detail">
+            <label for="order_gcash_ref">GCash / Maya Reference Number</label>
+            <input type="text" name="gcash_ref" id="order_gcash_ref" placeholder="e.g. 1234567890" />
+            <small class="hint">Send payment to <strong>09XX-XXX-XXXX</strong> (RESQ ME) then enter the reference number here.</small>
+          </div>
+
+          <div class="form-group field-span-2">
+            <label for="order_address">Shipping Address <span class="req">*</span></label>
+            <input type="text" name="address" id="order_address" required placeholder="Pureza Street, Sta. Mesa" />
+            <span class="field-error" id="err_order_address"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="order_city">City <span class="req">*</span></label>
+            <input type="text" name="city" id="order_city" required placeholder="Manila" />
+          </div>
+          <div class="form-group">
+            <label for="order_zip">ZIP / Postal Code <span class="req">*</span></label>
+            <input type="text" name="zip" id="order_zip" required placeholder="1016" />
+          </div>
+
+          <div class="form-group field-span-2">
+            <label for="order_notes">Order Notes <span class="optional">(optional)</span></label>
+            <textarea name="order_notes" id="order_notes" rows="3" placeholder="Any delivery instructions..."></textarea>
+          </div>
+        </div>
+
+        <!-- hidden total for email -->
+        <input type="hidden" name="order_total" id="order_total_hidden" value="FREE" />
+
+        <div class="order-actions">
+          <button class="btn btn-primary order-submit" type="submit" id="orderSubmitBtn">
+            <span id="orderBtnText">Submit Order</span>
+            <span id="orderSpinner" class="spinner" style="display:none"></span>
+          </button>
+        </div>
+
+        <!-- Order success message -->
+        <div class="order-success" id="orderSuccess" style="display:none">
+          <div class="success-icon">🎉</div>
+          <h4>Order Submitted!</h4>
+          <p>We received your order and will reach out via email to confirm payment and delivery details.</p>
+          <button type="button" class="btn btn-secondary" id="orderSuccessDismiss">Place Another Order</button>
+        </div>
+      </form>
+    </section>
+
+      <form id="orderForm" action="https://docs.google.com/spreadsheets/d/1YNfE_Bn1k-c_Gu1y0GMzQdFR7hI0kOD2qh4mKkxaK0c/edit?usp=sharing" method="POST" target="hidden_iframe">
+        <iframe name="hidden_iframe" style="display:none;"></iframe>
+    <!-- PROMOS -->
+    <section id="promos" class="card promos">
+      <div class="section-head">
+        <p class="kicker">Promos</p>
+        <h3>Current promotions</h3>
+      </div>
+      <p>RESQ ME currently has no active promotions, as we maintain low everyday prices to ensure our life-saving technology remains accessible to everyone. We offer a free Screenshot-Based Emergency Profile, a QR and NFC Keychain for 100 pesos, and a QR and NFC Card-Style Tag for 150 pesos. For future updates and brand announcements, please follow our social media pages.</p>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="card faq-section">
+      <div class="section-head">
+        <p class="kicker">FAQ</p>
+        <h3>Frequently Asked Questions</h3>
+      </div>
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary>What is RESQ ME and how does it work?</summary>
+          <p>RESQ ME generates a unique QR code linked to your emergency health profile. First responders scan your QR code to instantly access your critical health data — allergies, medications, blood type, and emergency contacts — without needing a password.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Is my personal data safe?</summary>
+          <p>Yes. Your data is stored securely and is never sold or shared with third parties. It is only accessible via your personal QR code, and your rights under the Philippine Data Privacy Act (RA 10173) are fully respected.</p>
+        </details>
+        <details class="faq-item">
+          <summary>What if I need to update my medical information?</summary>
+          <p>Contact us at support@resqme.com with your Patient ID and we will help you update your profile. A self-service update feature is coming soon.</p>
+        </details>
+        <details class="faq-item">
+          <summary>How long does delivery take for physical products?</summary>
+          <p>Delivery typically takes 3–7 business days within Metro Manila, and 5–10 business days for provincial orders, depending on your location and courier availability.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Can I get a refund or replacement?</summary>
+          <p>Yes. If your product arrives damaged or defective, contact us within 7 days of receipt for a replacement. Refunds are handled case-by-case.</p>
+        </details>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="card about">
+      <div class="section-head">
+        <p class="kicker">About</p>
+        <h3>About RESQ ME</h3>
+      </div>
+      <p>RESQ ME is a student-led health technology startup that provides emergency medical identification solutions through digital and physical products. The company utilizes QR codes and NFC technology to grant first responders instant access to a user's critical health data, such as allergies and chronic conditions. Their offerings include a free digital profile, as well as affordable keychains and card-style tags designed for quick scanning during crises. Operated by a specialized student management team, the venture prioritizes a lean, flat organizational structure to maintain operational flexibility and data privacy. By streamlining the intake of vital information, the service aims to improve emergency response times and personal safety for all users.</p>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="card contact">
+      <div class="section-head">
+        <p class="kicker">Contact</p>
+        <h3>Get in touch</h3>
+      </div>
+      <p>Email us at <a href="mailto:support@resqme.com">support@resqme.com</a></p>
+    </section>
+  </main>
+
+  <!-- Image modal -->
+  <div class="image-modal" id="imageModal" aria-hidden="true">
+    <button class="image-modal-close" id="imageModalClose" type="button" aria-label="Close image preview">×</button>
+    <img id="imageModalPreview" alt="Expanded product preview" />
+  </div>
+
+  <footer class="site-footer card" role="contentinfo">
+    <div class="footer-inner">
+      <div class="footer-left">
+        <p>© 2026 RESQ ME. All rights reserved.</p>
+      </div>
+      <nav class="footer-nav" aria-label="Footer navigation">
+        <a href="#home">Home</a>
+        <a href="#shop">Shop</a>
+        <a href="#register">Register</a>
+        <a href="#order">Order</a>
+        <a href="#about">About</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+
+  <!-- Privacy Modal Script -->
+  <script>
+    (function () {
+      const SESSION_KEY = 'resqme_privacy_accepted';
+      const overlay    = document.getElementById('privacyOverlay');
+      const agreeCheck = document.getElementById('dpAgreeCheck');
+      const btnAccept  = document.getElementById('btnAccept');
+      const btnDecline = document.getElementById('btnDecline');
+      if (sessionStorage.getItem(SESSION_KEY) === '1') { dismissModal(); return; }
+      document.body.classList.add('dp-locked');
+      document.body.style.overflow = 'hidden';
+      agreeCheck.addEventListener('change', () => { btnAccept.disabled = !agreeCheck.checked; });
+      btnAccept.addEventListener('click', () => { if (!agreeCheck.checked) return; sessionStorage.setItem(SESSION_KEY, '1'); dismissModal(); });
+      btnDecline.addEventListener('click', () => { window.location.href = 'about:blank'; });
+      overlay.addEventListener('keydown', (e) => {
+        if (e.key !== 'Tab') return;
+        const focusable = overlay.querySelectorAll('button:not([disabled]),input,[tabindex]:not([tabindex="-1"])');
+        const first = focusable[0], last = focusable[focusable.length-1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && overlay && !overlay.classList.contains('dp-hidden')) { e.stopImmediatePropagation(); e.preventDefault(); }
+      }, true);
+      function dismissModal() { overlay.style.display='none'; document.body.classList.remove('dp-locked'); document.body.style.overflow=''; }
+    })();
+  </script>
+</body>
+</html>

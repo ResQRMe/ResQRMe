@@ -1,7 +1,3 @@
-/* ══════════════════════════════════════════════════
-   RESQ ME — script.js
-   ══════════════════════════════════════════════════ */
-
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx-6b1yjrDO-Cs088Yh8y5QnfvH5Y5_-X6iu7SBhn4zlE2VbihTNPxJTyHm3TFs96rtLQ/exec";
 
 /* ── Theme ── */

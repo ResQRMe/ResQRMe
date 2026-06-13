@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/c39a4ae2-0d88-452a-bd60-a0c3289f1499" 
+  <img src="https://github.com/user-attachments/assets/597b67c9-1b8b-4eac-b544-294487a1b24f" 
        alt="RESQ ME Logo" 
        width="400">
 </p>

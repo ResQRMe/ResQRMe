@@ -1,7 +1,8 @@
-
-  <img src="https://github.com/user-attachments/assets/c39a4ae2-0d88-452a-bd60-a0c3289f1499" alt="RESQ ME Logo" width="400"/>
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/c39a4ae2-0d88-452a-bd60-a0c3289f1499" 
+       alt="RESQ ME Logo" 
+       width="400">
 </p>
-
 # 🚑 RESQ ME
 
 **RESQ ME** is an Emergency Medical Identification System designed to provide fast and secure access to critical health information during emergencies.
